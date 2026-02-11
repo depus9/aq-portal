@@ -9,7 +9,7 @@ use App\Filament\Resources\Shop\Customers\RelationManagers\AddressesRelationMana
 use App\Filament\Resources\Shop\Customers\RelationManagers\PaymentsRelationManager;
 use App\Filament\Resources\Shop\Customers\Schemas\CustomerForm;
 use App\Filament\Resources\Shop\Customers\Tables\CustomersTable;
-use App\Models\Shop\Customer;
+use App\Models\Customer;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;

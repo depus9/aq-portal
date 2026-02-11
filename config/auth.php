@@ -42,6 +42,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'customer' => [ // Add this
+        'driver' => 'session',
+        'provider' => 'customers',
+    ],
+    'filament' => [ // The default admin panel guard
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
     ],
 
     /*
@@ -66,6 +74,10 @@ return [
             'driver' => 'eloquent',
             'model' => User::class,
         ],
+        'customers' => [ // Add this
+        'driver' => 'eloquent',
+        'model' => App\Models\Customer::class,
+    ],
 
         // 'users' => [
         //     'driver' => 'database',

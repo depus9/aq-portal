@@ -2,11 +2,11 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Auth\Login;
-use App\Filament\Pages\Dashboard;
-use App\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -16,39 +16,34 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class CustomerPanelPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
-             ->authGuard('web') // Use the 'admin' guard
-            ->login(Login::class)
-            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->id('customer')
+            ->path('customer')
+            ->colors([
+                'primary' => Color::Amber,
+            ])
+             ->authGuard('customer') // Use the 'customer' guard
+            ->login()
+            ->registration()
+            ->passwordReset() // Lost Password functionality
+            ->profile() // Edit Profile functionality
+            ->discoverResources(in: app_path('Filament/CustomerPanel/Resources'), for: 'App\Filament\CustomerPanel\Resources')
+            ->discoverPages(in: app_path('Filament/CustomerPanel/Pages'), for: 'App\Filament\CustomerPanel\Pages')
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/CustomerPanel/Widgets'), for: 'App\Filament\CustomerPanel\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
-            ->unsavedChangesAlerts()
-            ->brandLogo(fn () => view('filament.app.logo'))
-            ->brandLogoHeight('1.25rem')
-            ->navigationGroups([
-                'Shop',
-                'Blog',
-            ])
-            ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -62,10 +57,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->spa()
-            ->colors([
-                'primary' => Color::Blue,
             ]);
     }
 }
